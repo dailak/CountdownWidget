@@ -23,7 +23,7 @@ public class EventParser {
 	private static final String TAG_ID = "id";
 	private static final String TAG_NAME = "name";
 	private static final String TAG_DATE = "date";
-	//private static final String TAG_UTCOFFSET = "utcoffset";
+	private static final String TAG_UTCOFFSET = "utcoffset";
 	private static final String TAG_BACKGROUND = "background";
 	 
 	// races JSONArray
@@ -42,6 +42,7 @@ public class EventParser {
 		// getting JSON string from URL
 		//JSONObject json = jParser.getJSONFromUrl(url);
 		JSONObject json = jParser.getJSONFromFile(R.raw.races_list, mActivity.getResources());
+		//JSONObject json = new JSONObject();
 		
 		try {
 		    // Getting Array of Contacts
@@ -59,7 +60,7 @@ public class EventParser {
 		        ev.eventDate = GregorianCalendar.getInstance();
 		        ev.eventDate.setTime(date);
 		        // Storing each json item in variable
-		        //ev.offset = c.getString(TAG_UTCOFFSET);
+		        ev.offset = Integer.parseInt(c.getString(TAG_UTCOFFSET));
 		        ev.logo = c.getString(TAG_BACKGROUND);
 		        events.add(ev);
 		    }

@@ -7,7 +7,14 @@ public class EventInfo {
 	public String name;
 	public String logo;
 	public Calendar eventDate;
+	public int offset;
 	
+	public int getOffset() {
+		return offset;
+	}
+	public void setOffset(int offset) {
+		this.offset = offset;
+	}
 	public int getId() {
 		return id;
 	}

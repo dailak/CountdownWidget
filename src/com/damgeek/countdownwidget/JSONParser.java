@@ -29,13 +29,12 @@ public class JSONParser {
     }
  
     public JSONObject getJSONFromFile(int id, Resources res) {
-    	InputStream is = null;
     	try {
     		is = res.openRawResource(id);
-    		byte[] reader = new byte[is.available()];
-    		while (is.read(reader) != -1) {}
+    		//byte[] reader = new byte[is.available()];
+    		//while (is.read(reader) != -1) {}
     		
-    	} catch (IOException e) {
+    	}  catch (Exception e) {
     		e.printStackTrace();
     	}
     	
