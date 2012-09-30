@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="hello">Hello World, CountdownWidgetActivity!</string>
+    <string name="app_name">Countdown Widget</string>
+    <string name="logo">Logo</string>
+    <string name="appwidget_configure_instructions">This text will be shown before the date in our example widget.</string>
+    <string name="countdownwidget_event_default">Canada</string>
+    <string name="event_default">Event</string>
+</resources>

@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_margin="@dimen/widget_margin_top"
+    android:background="@drawable/myshape"
+    android:gravity="top"
+    android:orientation="vertical" >
+
+    <ImageView
+        android:contentDescription="@string/logo"
+        android:id="@+id/imageView1"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="4dp"
+        android:scaleType="fitCenter"
+        android:src="@drawable/icanada" />
+    <TextView
+        android:id="@+id/update"
+        style="@android:style/TextAppearance.Medium"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dip"
+        android:gravity="center_horizontal"
+		android:textStyle="bold"
+        android:shadowColor="#111111"
+        android:shadowDx="2"  
+    	android:shadowDy="2"       
+    	android:shadowRadius="1"
+        android:text="" >
+
+    </TextView>
+
+	<TextView
+        android:id="@+id/eventName"
+        style ="@android:style/TextAppearance.Small"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:layout_margin="4dip"
+        android:gravity="center_horizontal"
+		android:textStyle="bold"
+        android:shadowColor="#111111"
+        android:shadowDx="2"  
+    	android:shadowDy="2"       
+    	android:shadowRadius="1"
+        android:text="" >
+
+    </TextView>
+    
+    
+    
+</LinearLayout>
