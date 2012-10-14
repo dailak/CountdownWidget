@@ -37,17 +37,9 @@ public class UpdateWidgetService extends Service {
 					.getApplicationContext().getPackageName(),
 					R.layout.widget_layout);
 
-			// the following should be changed to load the right image
-
-			// remoteViews.setImageViewResource(R.id.imageView1, R.drawable.icanada);
-
-			// calculate number of days left
-			Calendar theDate = CountdownWidgetActivity.getEventInfoByWidgetId(this.getApplicationContext(), widgetId).eventDate; 
-
-			long numOfDays = daysLeft(theDate);
-			// Set the text
-			remoteViews.setTextViewText(R.id.update,
-					String.valueOf(numOfDays)+ " Days");
+			Calendar eventDate = CountdownWidgetActivity.getEventInfoByWidgetId(this.getApplicationContext(), widgetId).eventDate;
+			String strCountDown = getCountDownText(eventDate);
+			remoteViews.setTextViewText(R.id.update, strCountDown);
 
 
 			//remoteViews.setTextViewText(R.id.eventName, text);
@@ -62,7 +54,50 @@ public class UpdateWidgetService extends Service {
 
 	}
 
-	public static Calendar getDatePart(Date date){
+	public static String getCountDownText(Calendar eventDate){
+		String strCountDown = "Go!";
+		
+		long numOfHours = hoursLeft(eventDate);
+		
+		if (numOfHours == -1)
+		{
+			strCountDown = "Go!";
+			
+		}
+		else {
+			double dblHours = numOfHours;
+			long numOfDays = (long) Math.ceil(dblHours / 24);
+				if (numOfDays > 1)
+					strCountDown = String.valueOf(numOfDays)+ " Days";
+				else
+					if (numOfHours > 1)
+						strCountDown = String.valueOf(numOfHours)+ " Hours";
+					else
+						strCountDown = String.valueOf(numOfHours)+ " Hour";	
+		}
+		
+		return strCountDown;
+	}
+	
+	private static long hoursLeft(Calendar calEvent) {
+		Calendar calToday = Calendar.getInstance();
+		double dblHours = 0;
+		
+		if (calToday.after(calEvent))
+			return -1;
+		
+		long milliToday = calToday.getTimeInMillis();
+		long milliEvent = calEvent.getTimeInMillis();
+		Long milliDiff = milliEvent - milliToday;
+		double dblMilliDiff = milliDiff.doubleValue();
+		
+		dblHours = (dblMilliDiff) / 1000 / 60 / 60;
+		
+		return (long) Math.ceil(dblHours);
+	}
+	
+	// below to be removed
+	private static Calendar getDatePart(Date date){
 		Calendar cal = Calendar.getInstance();       // get calendar instance
 		cal.setTime(date);      
 		cal.set(Calendar.HOUR_OF_DAY, 0);            // set hour to midnight
@@ -73,22 +108,8 @@ public class UpdateWidgetService extends Service {
 		return cal;                                  // return the date part
 	}
 
-	/**
-	 * This method also assumes endDate >= startDate
-	 **/
-	/*	public static long daysBetween(Date startDate, Date endDate) {
-		Calendar sDate = getDatePart(startDate);
-		Calendar eDate = getDatePart(endDate);
-
-		long daysBetween = 0;
-		while (sDate.before(eDate)) {
-			sDate.add(Calendar.DAY_OF_MONTH, 1);
-			daysBetween++;
-		}
-		return daysBetween;
-	}*/
-
-	public static long daysBetween(Calendar startDate, Calendar endDate) {
+	// below function to be removed
+	private static long daysBetween(Calendar startDate, Calendar endDate) {
 		Calendar date = (Calendar) startDate.clone();
 		long daysBetween = 0;
 		while (date.before(endDate)) {
@@ -98,8 +119,8 @@ public class UpdateWidgetService extends Service {
 		return daysBetween;
 	}
 
-
-	public static long daysLeft(Calendar endDate) {
+	// below function to be removed
+	private static long daysLeft(Calendar endDate) {
 		Calendar today = Calendar.getInstance();
 		return daysBetween(today, endDate);
 	}

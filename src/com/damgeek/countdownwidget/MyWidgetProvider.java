@@ -69,9 +69,12 @@ public class MyWidgetProvider extends AppWidgetProvider {
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         int imageSrcId = context.getResources().getIdentifier(eventInfo.logo,"drawable",context.getPackageName());
         views.setImageViewResource(R.id.imageView1, imageSrcId);
-        long numOfDays = UpdateWidgetService.daysLeft(eventInfo.eventDate);
-		views.setTextViewText(R.id.update, String.valueOf(numOfDays)+ " Days");
         
+        
+        //long numOfDays = UpdateWidgetService.daysLeft(eventInfo.eventDate);
+		//views.setTextViewText(R.id.update, String.valueOf(numOfDays)+ " Days");
+        views.setTextViewText(R.id.update, UpdateWidgetService.getCountDownText(eventInfo.eventDate));
+		
         // Tell the widget manager
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
