@@ -68,6 +68,11 @@ public class MyWidgetProvider extends AppWidgetProvider {
         // the layout from our package).
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.widget_layout);
         int imageSrcId = context.getResources().getIdentifier(eventInfo.logo,"drawable",context.getPackageName());
+        if (imageSrcId == 0)
+        	if (eventInfo.logo.endsWith("70"))
+        		imageSrcId = R.drawable.ironman70;
+        	else
+        		imageSrcId = R.drawable.ironman;
         views.setImageViewResource(R.id.imageView1, imageSrcId);
         
         
