@@ -33,7 +33,8 @@ implements LoaderManager.LoaderCallbacks<Cursor>{
     private static final String PREF_EVENTID_KEY = "eventid_";
     
     static List<EventInfo> events = new ArrayList<EventInfo>();
-	
+	List<String> raceTypes = new ArrayList<String>();
+    
 	SimpleCursorAdapter mAdapter;
 	// These are the Contacts rows that we will retrieve
 	static final String[] PROJECTION = new String[] {ContactsContract.Data._ID,
@@ -68,19 +69,10 @@ implements LoaderManager.LoaderCallbacks<Cursor>{
 		ViewGroup root = (ViewGroup) findViewById(android.R.id.content);
 		root.addView(progressBar);
 
-		// For the cursor adapter, specify which columns go into which views
-		//String[] fromColumns = {ContactsContract.Data.DISPLAY_NAME};
-		//int[] toViews = {android.R.id.text1}; // The TextView in simple_list_item_1
-
-		// Create an empty adapter we will use to display the loaded data.
-		// We pass null for the cursor, then update it in onLoadFinished()
-		/*mAdapter = new SimpleCursorAdapter(this, 
-                android.R.layout.simple_list_item_1, null,
-                fromColumns, toViews, 0);*/
+		raceTypes.add("Full Ironman");
+		raceTypes.add("Ironman 70.3");
 		
-		//Calendar theDate = new GregorianCalendar(TimeZone.getTimeZone("PST"));
-		EventParser parser = new EventParser(CountdownWidgetActivity.this);
-		events = parser.parse();
+
 		
 /*		events.add(new EventInfo(1,"70.3 Sri Lanka","isrilanka70", new GregorianCalendar(2013, 1, 19, 7, 0, 0) ));
 		events.add(new EventInfo(2,"70.3 Singapore","isingapore70",new GregorianCalendar(2013, 2, 18, 7, 0, 0)));
@@ -92,16 +84,11 @@ implements LoaderManager.LoaderCallbacks<Cursor>{
 		events.add(new EventInfo(8,"70.3 St. Croix","istcroix70",new GregorianCalendar(2013, 4, 6, 7, 0, 0)));
 		events.add(new EventInfo(9,"70.3 Mallorca","imallorca70",new GregorianCalendar(2013, 4, 12, 7, 0, 0)));
 		events.add(new EventInfo(10,"Texas","itexas",new GregorianCalendar(2013, 4, 19, 7, 0, 0)));*/
-		
-		ArrayAdapter<EventInfo> adapter = new ArrayAdapter<EventInfo>(this,
-				android.R.layout.simple_list_item_1, events);
+
+		ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+				android.R.layout.simple_list_item_1, raceTypes);
 		setListAdapter(adapter);
-		//setListAdapter(mAdapter);
-
-		// Prepare the loader.  Either re-connect with an existing one,
-		// or start a new one.
-		//getLoaderManager().initLoader(0, null, this);
-
+		
 		// Find the widget id from the intent. 
 		Intent intent = getIntent();
 		Bundle extras = intent.getExtras();
@@ -114,8 +101,6 @@ implements LoaderManager.LoaderCallbacks<Cursor>{
 		if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
 			finish();
 		}
-
-		//mAppWidgetPrefix.setText(loadTitlePref(CountdownWidgetActivity.this, mAppWidgetId));
 
 	}
 
@@ -173,18 +158,33 @@ implements LoaderManager.LoaderCallbacks<Cursor>{
 		// Push widget update to surface with newly set prefix
 		final Context context = CountdownWidgetActivity.this;
 
-        EventInfo event = (EventInfo) getListAdapter().getItem(position);
-        saveEventPref(context, mAppWidgetId, event.id);
-		
+		if (getListAdapter().getItem(position).getClass() == String.class) {
+			// Race Type Selected
+			EventParser parser = new EventParser(CountdownWidgetActivity.this);
+			String raceType = (String) getListAdapter().getItem(position);
+			if (raceType.equalsIgnoreCase("Full Ironman")) {
+				events = parser.parse(R.raw.races_list_full);
+			} else {
+				events = parser.parse(R.raw.races_list_half);
+			}
+			ArrayAdapter<EventInfo> adapter = new ArrayAdapter<EventInfo>(this,
+					android.R.layout.simple_list_item_1, events);
+			setListAdapter(adapter);
+		} else {
+			// Race selected - create widget
+	        EventInfo event = (EventInfo) getListAdapter().getItem(position);
+	        saveEventPref(context, mAppWidgetId, event.id);
+			
 
-		AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
-		MyWidgetProvider.updateAppWidget(context, appWidgetManager,
-		                mAppWidgetId, event);
+			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
+			MyWidgetProvider.updateAppWidget(context, appWidgetManager,
+			                mAppWidgetId, event);
 
-		// Make sure we pass back the original appWidgetId
-		Intent resultValue = new Intent();
-		resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
-		setResult(RESULT_OK, resultValue);
-		finish();
+			// Make sure we pass back the original appWidgetId
+			Intent resultValue = new Intent();
+			resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
+			setResult(RESULT_OK, resultValue);
+			finish();
+		}
 	}
 }

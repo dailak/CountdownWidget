@@ -33,7 +33,7 @@ public class EventParser {
 		mActivity = activity;
 	}
 	
-	public ArrayList<EventInfo> parse() {
+	public ArrayList<EventInfo> parse(int raceListId) {
 		ArrayList<EventInfo> events = new ArrayList<EventInfo>();
 		EventInfo ev;
 		// Creating JSON Parser instance
@@ -41,7 +41,7 @@ public class EventParser {
 		 
 		// getting JSON string from URL
 		//JSONObject json = jParser.getJSONFromUrl(url);
-		JSONObject json = jParser.getJSONFromFile(R.raw.races_list, mActivity.getResources());
+		JSONObject json = jParser.getJSONFromFile(raceListId, mActivity.getResources());
 		//JSONObject json = new JSONObject();
 		
 		try {
