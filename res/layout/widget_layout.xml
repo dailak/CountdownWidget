@@ -5,17 +5,18 @@
     android:layout_height="match_parent"
     android:layout_margin="@dimen/widget_margin_top"
     android:background="@drawable/myshape"
-    android:gravity="top"
+    android:gravity="top|center"
     android:orientation="vertical" >
-
+
     <ImageView
-        android:contentDescription="@string/logo"
         android:id="@+id/imageView1"
         android:layout_width="match_parent"
-        android:layout_height="40dp"
+        android:layout_height="match_parent"
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
-        android:layout_marginTop="4dp"
+        android:layout_marginTop="5dp"
+        android:layout_weight="3"
+        android:contentDescription="@string/logo"
         android:scaleType="fitCenter"
         android:src="@drawable/ironman" />
 
@@ -32,36 +33,20 @@
         android:id="@+id/update"
         style="@android:style/TextAppearance.Medium"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_gravity="center"
-        android:layout_margin="4dip"
-        android:gravity="center_horizontal"
-		android:textStyle="bold"
+        android:layout_margin="5dp"
+        android:layout_weight="3"
+        android:gravity="center"
         android:shadowColor="#111111"
-        android:shadowDx="2"  
-    	android:shadowDy="2"       
-    	android:shadowRadius="1"
-        android:text="" >
+        android:shadowDx="2"
+        android:shadowDy="2"
+        android:shadowRadius="1"
+        android:text="Ironman"
+        android:textSize="30sp"
+        android:textStyle="bold" >
 
-    </TextView>
+	</TextView>
 
-	<TextView
-        android:id="@+id/eventName"
-        style ="@android:style/TextAppearance.Small"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="4dip"
-        android:gravity="center_horizontal"
-		android:textStyle="bold"
-        android:shadowColor="#111111"
-        android:shadowDx="2"  
-    	android:shadowDy="2"       
-    	android:shadowRadius="1"
-        android:text="" >
-
-    </TextView>
-    
-    
     
 </LinearLayout>
