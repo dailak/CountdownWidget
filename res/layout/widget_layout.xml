@@ -17,7 +17,17 @@
         android:layout_marginRight="8dp"
         android:layout_marginTop="4dp"
         android:scaleType="fitCenter"
-        android:src="@drawable/icanada" />
+        android:src="@drawable/ironman" />
+
+    <TextView
+        android:id="@+id/tv_event_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal" 
+        android:text="@string/event_default"
+        android:textSize="8dp"
+        android:padding="0dp"/>
+
     <TextView
         android:id="@+id/update"
         style="@android:style/TextAppearance.Medium"
