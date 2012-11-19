@@ -1,4 +1,4 @@
-package com.damgeek.countdownwidget;
+package com.damgeek.countdownwidget.utils;
 
 import java.io.BufferedReader;
 import java.io.IOException;

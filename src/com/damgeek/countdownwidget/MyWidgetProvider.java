@@ -2,6 +2,9 @@ package com.damgeek.countdownwidget;
 
 import java.util.Calendar;
 
+import com.damgeek.countdownwidget.events.EventInfo;
+import com.damgeek.countdownwidget.events.EventPrefManager;
+
 import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.appwidget.AppWidgetManager;
@@ -52,7 +55,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
 		int[] allWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget);
 
 		for (int widgetId : allWidgetIds) {
-			EventInfo eventInfo = CountdownWidgetActivity.getEventInfoByWidgetId(context, widgetId);
+			EventInfo eventInfo = EventPrefManager.getEventInfoByWidgetId(context, widgetId);
 			updateAppWidget(context, appWidgetManager, widgetId, eventInfo);
 		}
 
@@ -75,7 +78,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
 			if (eventInfo.logo.endsWith("70"))
 				imageSrcId = R.drawable.ironman70;
 			else
-				imageSrcId = R.drawable.ironman;
+				imageSrcId = R.drawable.ironman; 
 		} else
 			views.setViewVisibility(R.id.tv_event_name, View.GONE);
 
@@ -103,7 +106,7 @@ public class MyWidgetProvider extends AppWidgetProvider {
 		// When the user deletes the widget, delete the preference associated with it.
 		final int N = appWidgetIds.length;
 		for (int i=0; i<N; i++) {
-			CountdownWidgetActivity.deleteEventPref(context, appWidgetIds[i]);
+			EventPrefManager.deleteEventPref(context, appWidgetIds[i]);
 		}
 	}
 

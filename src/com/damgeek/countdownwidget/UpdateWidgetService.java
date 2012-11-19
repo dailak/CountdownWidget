@@ -3,6 +3,8 @@ package com.damgeek.countdownwidget;
 import java.util.Calendar;
 import java.util.Date;
 
+import com.damgeek.countdownwidget.events.EventPrefManager;
+
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.ComponentName;
@@ -37,7 +39,7 @@ public class UpdateWidgetService extends Service {
 					.getApplicationContext().getPackageName(),
 					R.layout.widget_layout);
 
-			Calendar eventDate = CountdownWidgetActivity.getEventInfoByWidgetId(this.getApplicationContext(), widgetId).eventDate;
+			Calendar eventDate = EventPrefManager.getEventInfoByWidgetId(this.getApplicationContext(), widgetId).eventDate;
 			String strCountDown = getCountDownText(eventDate);
 			remoteViews.setTextViewText(R.id.update, strCountDown);
 
@@ -55,7 +57,7 @@ public class UpdateWidgetService extends Service {
 	}
 
 	public static String getCountDownText(Calendar eventDate){
-		String strCountDown = "Go!";
+		String strCountDown = "Go!"; 
 		
 		long numOfHours = hoursLeft(eventDate);
 		

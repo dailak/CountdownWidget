@@ -1,4 +1,4 @@
-package com.damgeek.countdownwidget;
+package com.damgeek.countdownwidget.events;
 
 import java.util.Calendar;
 
@@ -8,6 +8,9 @@ public class EventInfo {
 	public String logo;
 	public Calendar eventDate;
 	public int offset;
+	public static final String HALF_IRONMAN = "half ironman";
+	public static final String FULL_IRONMAN = "full ironman";
+	
 	
 	public int getOffset() {
 		return offset;

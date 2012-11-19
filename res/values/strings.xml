@@ -7,4 +7,6 @@
     <string name="appwidget_configure_instructions">This text will be shown before the date in our example widget.</string>
     <string name="countdownwidget_event_default">Canada</string>
     <string name="event_default">Event Name</string>
+    <string name="txt_ironman">Ironman</string>
+    <string name="txt_default_days">238 Days</string>
 </resources>

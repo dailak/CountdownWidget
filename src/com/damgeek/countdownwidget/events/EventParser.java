@@ -1,4 +1,4 @@
-package com.damgeek.countdownwidget;
+package com.damgeek.countdownwidget.events;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -11,12 +11,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import com.damgeek.countdownwidget.utils.JSONParser;
+
 import android.app.Activity;
+import android.content.Context;
 
 public class EventParser {
 	// url to make request
 	//private static String url = "http://www.dailak.com/ironmancountdown/races_list.json";
-	private Activity mActivity;
+	private Context mContext;
 	
 	// JSON Node names
 	private static final String TAG_RACES = "races";
@@ -29,8 +32,8 @@ public class EventParser {
 	// races JSONArray
 	JSONArray races = null;
 	
-	public EventParser(Activity activity) {
-		mActivity = activity;
+	public EventParser(Context context) {
+		mContext = context;
 	}
 	
 	public ArrayList<EventInfo> parse(int raceListId) {
@@ -41,7 +44,7 @@ public class EventParser {
 		 
 		// getting JSON string from URL
 		//JSONObject json = jParser.getJSONFromUrl(url);
-		JSONObject json = jParser.getJSONFromFile(raceListId, mActivity.getResources());
+		JSONObject json = jParser.getJSONFromFile(raceListId, mContext.getResources());
 		//JSONObject json = new JSONObject();
 		
 		try {

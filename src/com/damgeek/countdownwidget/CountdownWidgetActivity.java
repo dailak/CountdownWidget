@@ -11,10 +11,10 @@ import android.content.Context;
 import android.content.CursorLoader;
 import android.content.Intent;
 import android.content.Loader;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.ContactsContract;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,15 +24,13 @@ import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.SimpleCursorAdapter;
 
+import com.damgeek.countdownwidget.events.EventInfo;
+import com.damgeek.countdownwidget.events.EventPrefManager;
+
 public class CountdownWidgetActivity extends ListActivity
 implements LoaderManager.LoaderCallbacks<Cursor>{
 	/** Called when the activity is first created. */
 
-    private static final String PREFS_NAME
-    = "com.damgeek.countdownwidget.MyWidgetProvider";
-    private static final String PREF_EVENTID_KEY = "eventid_";
-    
-    static List<EventInfo> events = new ArrayList<EventInfo>();
 	List<String> raceTypes = new ArrayList<String>();
     
 	SimpleCursorAdapter mAdapter;
@@ -43,6 +41,7 @@ implements LoaderManager.LoaderCallbacks<Cursor>{
 	static final String SELECTION = "((" + 
 			ContactsContract.Data.DISPLAY_NAME + " NOTNULL) AND (" +
 			ContactsContract.Data.DISPLAY_NAME + " != '' ))";
+	private static final String TAG = "CountdownWidgetActivity"; 
 
 	int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
 	EditText mAppWidgetPrefix;
@@ -104,34 +103,7 @@ implements LoaderManager.LoaderCallbacks<Cursor>{
 
 	}
 
-    // Write the prefix to the SharedPreferences object for this widget
-    static void saveEventPref(Context context, int appWidgetId, int id) {
-        SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.putInt(PREF_EVENTID_KEY + appWidgetId, id);
-        prefs.commit();
-    }
-	
-    // Read the prefix from the SharedPreferences object for this widget.
-    // If there is no preference saved, get the default from a resource
-    static int loadEventPref(Context context, int appWidgetId) {
-        SharedPreferences prefs = context.getSharedPreferences(PREFS_NAME, 0);
-        int eventId = prefs.getInt(PREF_EVENTID_KEY + appWidgetId, 1);
-        return eventId;
-    }
-    
-    static void deleteEventPref(Context context, int appWidgetId) {
-    	SharedPreferences.Editor prefs = context.getSharedPreferences(PREFS_NAME, 0).edit();
-        prefs.remove(PREF_EVENTID_KEY + appWidgetId); 
-        prefs.commit();
-    }
-    
-    static EventInfo getEventInfoByWidgetId(Context context, int appWidgetId) {
-    	return getEventInfoByEventId(loadEventPref(context, appWidgetId));
-    }
-    
-    static EventInfo getEventInfoByEventId(int eventId) {
-    	return (events.get(eventId-1));
-    }
+
 	
 	public Loader<Cursor> onCreateLoader(int id, Bundle args) {
 		// Now create and return a CursorLoader that will take care of
@@ -160,20 +132,17 @@ implements LoaderManager.LoaderCallbacks<Cursor>{
 
 		if (getListAdapter().getItem(position).getClass() == String.class) {
 			// Race Type Selected
-			EventParser parser = new EventParser(CountdownWidgetActivity.this);
 			String raceType = (String) getListAdapter().getItem(position);
-			if (raceType.equalsIgnoreCase("Full Ironman")) {
-				events = parser.parse(R.raw.races_list_full);
-			} else {
-				events = parser.parse(R.raw.races_list_half);
-			}
+			List<EventInfo> events = EventPrefManager.getEvents(this, raceType);
+			if (events == null || events.size() == 0)
+				Log.d(TAG, "event list is null after selecting an event, raceType:"+raceType);
 			ArrayAdapter<EventInfo> adapter = new ArrayAdapter<EventInfo>(this,
 					android.R.layout.simple_list_item_1, events);
 			setListAdapter(adapter);
 		} else {
 			// Race selected - create widget
 	        EventInfo event = (EventInfo) getListAdapter().getItem(position);
-	        saveEventPref(context, mAppWidgetId, event.id);
+	        EventPrefManager.saveEventPref(context, mAppWidgetId, event.id);
 			
 
 			AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
@@ -187,4 +156,6 @@ implements LoaderManager.LoaderCallbacks<Cursor>{
 			finish();
 		}
 	}
+
+
 }
